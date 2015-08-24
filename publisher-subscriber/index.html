@@ -18,37 +18,37 @@
 
 <script>
 
-    var announcements = (function () {
+    var announcements = ( function () {
 
         // This is private
         var topics = {};
 
         return {
 
-            announce: function(topic, announcement) {
+            announce: function( topic, announcement ) {
 
-                if ( !topics[topic] ) {
+                if ( !topics[ topic ] ) {
                     return false;
                 }
 
-                var listeners = topics[topic];
+                var listeners = topics[ topic ];
 
                 var length = listeners.length || 0;
 
                 for ( var i = 0; i < length; i++ ) {
-                    listeners[i].func(topic, announcement);
+                    listeners[ i ].func( topic, announcement );
                 }
 
 
             },
 
-            listen: function(topic, func) {
+            listen: function( topic, func ) {
 
-                if ( !topics[topic] ) {
-                    topics[topic] = [];
+                if ( !topics[ topic ] ) {
+                    topics[ topic ] = [];
                 }
 
-                topics[topic].push({
+                topics[ topic ].push({
                     func: func
                 });
 
@@ -56,27 +56,27 @@
 
         };
 
-    })();
+    } )();
 
     // Usage
 
     // Explicit import of global variable
-    (function (announcements) {
+    ( function ( announcements ) {
 
-        var announceInput = document.getElementById("announceInput"),
-            announceButton = document.getElementById("announceButton"),
-            announcementDisplay = document.getElementById("announcementDisplay");
+        var announceInput = document.getElementById( "announceInput" ),
+            announceButton = document.getElementById( "announceButton" ),
+            announcementDisplay = document.getElementById( "announcementDisplay" );
 
         announceButton.onclick = function() {
-            announcements.announce("input", announceInput.value);
+            announcements.announce( "input", announceInput.value );
         };
 
-        announcements.listen("input", function(topic, announcement) {
-            console.log("Input announcement occurred: ", topic, announcement);
+        announcements.listen( "input", function( topic, announcement ) {
+            console.log( "Input announcement occurred: ", topic, announcement );
             announcementDisplay.innerText = announcement;
         });
 
-    })(announcements);
+    } )( announcements );
 
 </script>
 
