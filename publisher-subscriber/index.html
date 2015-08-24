@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publisher/subscriber pattern</title>
+</head>
+<body>
+
+    <input style="width:300px;" id="announceInput" type="text" placeholder="What do you want to announce?" />
+    <button id="announceButton">Publish</button>
+
+    <div>
+        <strong>Announcement:</strong><br />
+        <span id="announcementDisplay"></span>
+    </div>
+
+</body>
+
+<script>
+
+    var announcements = (function () {
+
+        var topics = {};
+
+        return {
+
+            announce: function(topic, announcement) {
+
+                if ( !topics[topic] ) {
+                    return false;
+                }
+
+                var listeners = topics[topic];
+
+                var length = listeners.length || 0;
+
+                for ( var i = 0; i < length; i++ ) {
+                    listeners[i].func(topic, announcement);
+                }
+
+
+            },
+
+            listen: function(topic, func) {
+
+                if ( !topics[topic] ) {
+                    topics[topic] = [];
+                }
+
+                topics[topic].push({
+                    func: func
+                });
+
+            }
+
+        };
+
+    })();
+
+    // Usage
+
+    (function () {
+
+        var announceInput = document.getElementById("announceInput"),
+            announceButton = document.getElementById("announceButton"),
+            announcementDisplay = document.getElementById("announcementDisplay");
+
+        announceButton.onclick = function() {
+            announcements.announce("input", announceInput.value);
+        };
+
+        announcements.listen("input", function(topic, announcement) {
+            console.log("Input announcement occurred: ", topic, announcement);
+            announcementDisplay.innerText = announcement;
+        });
+
+    })();
+
+</script>
+
+</html>
